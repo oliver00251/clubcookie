@@ -35,7 +35,7 @@ class ProdutoController extends Controller
             'preco' => 'nullable|numeric',
             'link' => 'required|string|max:255',
             'emoji' => 'nullable|string|max:10',
-            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // validação da imagem
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:20048', // validação da imagem
         ]);
 
         // Upload da imagem se existir
@@ -59,7 +59,7 @@ class ProdutoController extends Controller
             'preco' => 'nullable|numeric',
             'link' => 'required|string|max:255',
             'emoji' => 'nullable|string|max:10',
-            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:20048',
         ]);
 
         // Upload da nova imagem
