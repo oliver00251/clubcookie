@@ -443,35 +443,32 @@
     </section>
 
     <!-- Produtos -->
+    <!-- Produtos -->
     <section class="section" id="cardapio">
         <h2>Produtos em Destaque</h2>
         <div class="produtos-grid">
-            <div class="produto-card">
-                <div class="produto-image">🍪</div>
-                <div class="produto-content">
-                    <h3>Cookie Chocolate Belga</h3>
-                    <p>Massa amanteigada com pedaços generosos de chocolate belga premium</p>
-                    <a href="#" class="btn-primary">Peça Agora</a>
+            @foreach ($produtos as $produto)
+                <div class="produto-card">
+                    <div class="produto-image">
+                        @if ($produto->imagem)
+                            <img src="{{ url('public/storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}"
+                                style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
+                        @elseif($produto->emoji)
+                            {{ $produto->emoji }}
+                        @else
+                            🍪
+                        @endif
+                    </div>
+                    <div class="produto-content">
+                        <h3>{{ $produto->nome }}</h3>
+                        <p>{{ $produto->descricao }}</p>
+                        <a href="{{ $produto->link }}" class="btn-primary" target="_blank">Peça Agora</a>
+                    </div>
                 </div>
-            </div>
-            <div class="produto-card">
-                <div class="produto-image">🥜</div>
-                <div class="produto-content">
-                    <h3>Cookie Nuts & Caramelo</h3>
-                    <p>Combinação perfeita de nozes crocantes com caramelo artesanal</p>
-                    <a href="#" class="btn-primary">Peça Agora</a>
-                </div>
-            </div>
-            <div class="produto-card">
-                <div class="produto-image">🍓</div>
-                <div class="produto-content">
-                    <h3>Cookie Red Velvet</h3>
-                    <p>Sabor aveludado com cream cheese e toque de baunilha</p>
-                    <a href="#" class="btn-primary">Peça Agora</a>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
+
 
     <!-- Mapa Localizador -->
     <section class="section" id="unidades">
