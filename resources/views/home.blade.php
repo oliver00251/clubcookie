@@ -208,11 +208,11 @@
             font-weight: 700;
         }
 
-        /* Produtos */
+        /* Produtos - MELHORIAS APLICADAS */
         .produtos-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
             margin-top: 3rem;
         }
 
@@ -221,36 +221,115 @@
             border-radius: 20px;
             overflow: hidden;
             border: 1px solid rgba(200, 138, 50, 0.2);
-            transition: transform 0.3s ease;
+            transition: all 0.4s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .produto-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(243, 193, 100, 0.5);
         }
 
         .produto-image {
-            height: 200px;
+            height: 220px;
             background: linear-gradient(45deg, #7B4A23, #C88A32);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
-            color: #F3C164;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .produto-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .produto-card:hover .produto-image img {
+            transform: scale(1.05);
+        }
+
+        .produto-emoji {
+            font-size: 5rem;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .produto-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #F3C164, #C88A32);
+            color: #1C0E05;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .produto-content {
-            padding: 1.5rem;
+            padding: 1.8rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .produto-card h3 {
             color: #F3C164;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
             font-weight: 700;
+            font-size: 1.4rem;
         }
 
         .produto-card p {
             margin-bottom: 1.5rem;
             color: #E5B273;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+
+        .produto-price {
+            color: #F3C164;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+
+        .produto-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .produto-actions .btn-primary {
+            flex: 1;
+            text-align: center;
+            padding: 0.8rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #C88A32;
+            color: #C88A32;
+            padding: 0.8rem 1rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-align: center;
+            flex: 1;
+        }
+
+        .btn-outline:hover {
+            background: rgba(200, 138, 50, 0.1);
+            transform: translateY(-2px);
         }
 
         /* Franquia */
@@ -407,6 +486,15 @@
             .franquia-section h2 {
                 font-size: 2rem;
             }
+
+            .produtos-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .produto-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -443,32 +531,29 @@
     </section>
 
     <!-- Produtos -->
-    <!-- Produtos -->
     <section class="section" id="cardapio">
-        <h2>Produtos em Destaque</h2>
+        <h2>Nossos Cookies Premium</h2>
         <div class="produtos-grid">
-            @foreach ($produtos as $produto)
-                <div class="produto-card">
-                    <div class="produto-image">
-                        @if ($produto->imagem)
-                            <img src="{{ url('public/storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}"
-                                style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
-                        @elseif($produto->emoji)
-                            {{ $produto->emoji }}
-                        @else
-                            🍪
-                        @endif
-                    </div>
-                    <div class="produto-content">
-                        <h3>{{ $produto->nome }}</h3>
-                        <p>{{ $produto->descricao }}</p>
+            <!-- Produto 1 -->
+            <div class="produto-card">
+                <div class="produto-image">
+                    <span class="produto-emoji">🍪</span>
+                    <div class="produto-badge">Mais Vendido</div>
+                </div>
+                <div class="produto-content">
+                    <h3>{{ $produto->nome }}</h3>
+                    <p>{{ $produto->descricao }}</p>
+                    {{--                     <div class="produto-price">R$ 8,90</div>
+ --}} <div class="produto-actions">
                         <a href="{{ $produto->link }}" class="btn-primary" target="_blank">Peça Agora</a>
+                        <a href="#" class="btn-outline">Detalhes</a>
                     </div>
                 </div>
-            @endforeach
+            </div>
+
+
         </div>
     </section>
-
 
     <!-- Mapa Localizador -->
     <section class="section" id="unidades">
