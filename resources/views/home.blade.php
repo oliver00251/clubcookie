@@ -234,27 +234,7 @@
             border-color: rgba(243, 193, 100, 0.5);
         }
 
-        .produto-image {
-            height: 220px;
-            background: linear-gradient(45deg, #7B4A23, #C88A32);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .produto-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .produto-card:hover .produto-image img {
-            transform: scale(1.05);
-        }
-
+       
         .produto-emoji {
             font-size: 5rem;
             filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
@@ -486,12 +466,12 @@
             .franquia-section h2 {
                 font-size: 2rem;
             }
-            
+
             .produtos-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
-            
+
             .produto-actions {
                 flex-direction: column;
             }
@@ -532,28 +512,29 @@
 
     <!-- Produtos -->
     <section class="section" id="cardapio">
-    <h2>Produtos em Destaque</h2>
-    <div class="produtos-grid">
-        @foreach($produtos as $produto)
-            <div class="produto-card">
-                <div class="produto-image">
-                    @if($produto->imagem)
-                        <img src="{{ url('public/storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}">
-                    @elseif($produto->emoji)
-                        <span class="emoji">{{ $produto->emoji }}</span>
-                    @else
-                        <span class="emoji">🍪</span>
-                    @endif
+        <h2>Produtos em Destaque</h2>
+        <div class="produtos-grid">
+            @foreach ($produtos as $produto)
+                <div class="produto-card">
+                    <div class="produto-image">
+                        @if ($produto->imagem)
+                            <img src="{{ url('public/storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}">
+                        @elseif($produto->emoji)
+                            <span class="emoji">{{ $produto->emoji }}</span>
+                        @else
+                            <span class="emoji">🍪</span>
+                        @endif
+                    </div>
+                    <div class="produto-content">
+                        <h3>{{ $produto->nome }}</h3>
+                        <p>{{ $produto->descricao }}</p>
+                        <a href="{{ $produto->link }}" class="btn-primary" target="_blank">Peça Agora</a>
+                    </div>
                 </div>
-                <div class="produto-content">
-                    <h3>{{ $produto->nome }}</h3>
-                    <p>{{ $produto->descricao }}</p>
-                    <a href="{{ $produto->link }}" class="btn-primary" target="_blank">Peça Agora</a>
-                </div>
-            </div>
-        @endforeach
-    </div>
-</section>
+            @endforeach
+        </div>
+    </section>
+
 
 
 
@@ -598,11 +579,11 @@
         </div>
     </footer>
 </body>
-<style>.produtos-grid {
+<style>
+  .produtos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* 3 produtos lado a lado no desktop */
     gap: 20px;
-    align-items: stretch;
 }
 
 .produto-card {
@@ -612,6 +593,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    height: 350px; /* altura fixa do card */
     transition: transform 0.2s ease;
 }
 
@@ -621,7 +603,7 @@
 
 .produto-image {
     width: 100%;
-    height: 200px;
+    height: 150px; /* altura fixa da imagem */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -677,5 +659,14 @@
 .emoji {
     font-size: 3rem;
 }
+
+/* RESPONSIVO: 1 produto por linha em telas menores que 768px */
+@media screen and (max-width: 768px) {
+    .produtos-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 </style>
+
 </html>
