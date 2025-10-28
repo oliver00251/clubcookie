@@ -531,24 +531,30 @@
     </section>
 
     <!-- Produtos -->
-    @foreach($produtos as $produto)
-    <div class="produto-card">
-        <div class="produto-image">
-            @if($produto->imagem)
-                <img src="{{ url('public/storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}" style="object-fit:cover;">
-            @elseif($produto->emoji)
-                {{ $produto->emoji }}
-            @else
-                🍪
-            @endif
-        </div>
-        <div class="produto-content">
-            <h3>{{ $produto->nome }}</h3>
-            <p>{{ $produto->descricao }}</p>
-            <a href="{{ $produto->link }}" class="btn-primary" target="_blank">Peça Agora</a>
-        </div>
+    <section class="section" id="cardapio">
+    <h2>Produtos em Destaque</h2>
+    <div class="produtos-grid">
+        @foreach($produtos as $produto)
+            <div class="produto-card">
+                <div class="produto-image">
+                    @if($produto->imagem)
+                        <img src="{{ url('public/storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}">
+                    @elseif($produto->emoji)
+                        <span class="emoji">{{ $produto->emoji }}</span>
+                    @else
+                        <span class="emoji">🍪</span>
+                    @endif
+                </div>
+                <div class="produto-content">
+                    <h3>{{ $produto->nome }}</h3>
+                    <p>{{ $produto->descricao }}</p>
+                    <a href="{{ $produto->link }}" class="btn-primary" target="_blank">Peça Agora</a>
+                </div>
+            </div>
+        @endforeach
     </div>
-@endforeach
+</section>
+
 
 
     <!-- Mapa Localizador -->
@@ -592,5 +598,84 @@
         </div>
     </footer>
 </body>
+<style>.produtos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    align-items: stretch;
+}
 
+.produto-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.produto-card:hover {
+    transform: translateY(-5px);
+}
+
+.produto-image {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f7f7f7;
+    overflow: hidden;
+}
+
+.produto-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+.produto-card:hover .produto-image img {
+    transform: scale(1.05);
+}
+
+.produto-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.produto-content h3 {
+    margin: 0 0 10px;
+    font-size: 1.2rem;
+}
+
+.produto-content p {
+    flex-grow: 1;
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.btn-primary {
+    background-color: #ff7f50;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #ff5722;
+}
+
+.emoji {
+    font-size: 3rem;
+}
+</style>
 </html>
