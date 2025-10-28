@@ -87,8 +87,8 @@
                             <td>{{ $produto->id }}</td>
                             <td>
                                 @if ($produto->imagem)
-                                    <img src="{{ url('public/storage/' . $produto->imagem) }}" class="produto-img" alt="{{ $produto->nome }}" style="width:50px;height:50px;object-fit:cover;">
-
+                                    <img src="{{ url('public/storage/' . $produto->imagem) }}" class="produto-img"
+                                        alt="{{ $produto->nome }}" style="width:50px;height:50px;object-fit:cover;">
                                 @else
                                     -
                                 @endif
@@ -137,18 +137,15 @@
                             </div>
                             <div class="col-12">
                                 <label for="descricao" class="form-label">Descrição</label>
-                                <textarea class="form-control" name="descricao" id="descricao" required></textarea>
+                                <textarea class="form-control" name="descricao" id="descricao" rows="10" cols="50" required></textarea>
                             </div>
+
                             <div class="col-md-6">
                                 <label for="link" class="form-label">Link</label>
                                 <input type="url" class="form-control" name="link" id="link" required>
                             </div>
-                            <div class="col-md-3">
-                                <label for="emoji" class="form-label">Emoji</label>
-                                <input type="text" class="form-control" name="emoji" id="emoji"
-                                    maxlength="10">
-                            </div>
-                            <div class="col-md-3">
+                        
+                            <div class="col-md">
                                 <label for="imagem" class="form-label">Imagem</label>
                                 <input type="file" class="form-control" name="imagem" id="imagem"
                                     accept="image/*">
