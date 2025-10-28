@@ -67,7 +67,7 @@
                     <td>{{ $produto->id }}</td>
                     <td>
                         @if($produto->imagem)
-                            <img src="{{ asset('storage/' . $produto->imagem) }}" class="produto-img" alt="{{ $produto->nome }}">
+                            <img src="{{ asset('storage/' . $produto->imagem) }}" class="produto-img" alt="{{ $produto->nome }}" style="width: 50px; height: 50px; object-fit: cover;">
                         @else
                             -
                         @endif
