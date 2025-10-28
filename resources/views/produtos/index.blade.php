@@ -3,27 +3,69 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Produtos</title>
+    <title>Dashboard - Produtos</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
     <style>
         body {
+            font-family: 'Inter', sans-serif;
             background-color: #f8f9fa;
+            overflow-x: hidden;
         }
 
+        /* ===== LAYOUT GERAL ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 250px;
+            background-color: rgba(28, 14, 5, 0.95);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+
+        .sidebar .brand {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background-color: #E5B273;
+        }
+
+        .sidebar .logout {
+            margin-top: auto;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        /* ===== TABELA E CARTÕES ===== */
         .card {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .table th,
-        .table td {
-            vertical-align: middle;
-        }
-
-        .btn-sm {
-            min-width: 70px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .produto-img {
@@ -32,35 +74,62 @@
             object-fit: cover;
             border-radius: 5px;
         }
+
+        /* ===== NAVBAR SUPERIOR ===== */
+        .topbar {
+            background: white;
+            border-bottom: 1px solid #dee2e6;
+            padding: 0.75rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                flex-direction: row;
+                overflow-x: auto;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="#">Clube do Cookie</a>
-            <div class="collapse navbar-collapse justify-content-end">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            <button class="btn btn-outline-light btn-sm">Sair</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="text-secondary">Produtos</h2>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="brand"><i class="bi bi-cookie"></i> Clube do Cookie</div>
+        <a href="#" class="active"><i class="bi bi-box-seam"></i> Produtos</a>
+        <a href="#" title="aguardando formulário"><i class="bi bi-person"></i> Leads</a>
+        {{-- <a href="#"><i class="bi bi-bar-chart"></i> Relatórios</a>
+        <a href="#"><i class="bi bi-gear"></i> Configurações</a> --}}
+
+        <form action="{{ route('logout') }}" method="POST" class="logout mt-3" style="margin-top: 60vh !important">
+            @csrf
+            <button class="btn btn-outline-light w-100"><i class="bi bi-box-arrow-right"></i> Sair</button>
+        </form>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="content">
+        <!-- Topbar -->
+        <div class="topbar d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 text-secondary fw-semibold">Painel de Produtos</h4>
             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCadastro">
                 <i class="bi bi-plus-lg"></i> Novo Produto
             </button>
         </div>
 
-        <div class="card p-3">
+        <!-- Tabela -->
+        <div class="card p-3 mt-4">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
@@ -88,12 +157,11 @@
                             <td>
                                 @if ($produto->imagem)
                                     <img src="{{ url('public/storage/' . $produto->imagem) }}" class="produto-img"
-                                        alt="{{ $produto->nome }}" style="width:50px;height:50px;object-fit:cover;">
+                                        alt="{{ $produto->nome }}">
                                 @else
                                     -
                                 @endif
                             </td>
-
                             <td>{{ $produto->nome }}</td>
                             <td>{{ $produto->descricao }}</td>
                             <td>{{ $produto->preco ? 'R$ ' . number_format($produto->preco, 2, ',', '.') : '-' }}</td>
@@ -113,7 +181,7 @@
         </div>
     </div>
 
-    <!-- Modal Cadastro/Editar -->
+    <!-- MODAL CADASTRO -->
     <div class="modal fade" id="modalCadastro" tabindex="-1" aria-labelledby="modalCadastroLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -137,18 +205,15 @@
                             </div>
                             <div class="col-12">
                                 <label for="descricao" class="form-label">Descrição</label>
-                                <textarea class="form-control" name="descricao" id="descricao" rows="10" cols="50" required></textarea>
+                                <textarea class="form-control" name="descricao" id="descricao" rows="4" required></textarea>
                             </div>
-
                             <div class="col-md-6">
                                 <label for="link" class="form-label">Link</label>
                                 <input type="url" class="form-control" name="link" id="link" required>
                             </div>
-                        
-                            <div class="col-md">
+                            <div class="col-md-6">
                                 <label for="imagem" class="form-label">Imagem</label>
-                                <input type="file" class="form-control" name="imagem" id="imagem"
-                                    accept="image/*">
+                                <input type="file" class="form-control" name="imagem" id="imagem" accept="image/*">
                             </div>
                         </div>
                     </div>
@@ -166,7 +231,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <script>
         $(document).ready(function() {
@@ -184,7 +248,7 @@
             let row = $(`#produto-${id}`);
             $('#modalCadastroLabel').text('Editar Produto');
             $('#formProduto').attr('action', `/produtos/${id}`);
-            $('#formProduto').append('@method('PUT')');
+            $('#formProduto').append('@method("PUT")');
             $('#produto_id').val(id);
             $('#nome').val(row.find('td:eq(2)').text());
             $('#descricao').val(row.find('td:eq(3)').text());
