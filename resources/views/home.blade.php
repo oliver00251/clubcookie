@@ -486,12 +486,12 @@
             .franquia-section h2 {
                 font-size: 2rem;
             }
-
+            
             .produtos-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
-
+            
             .produto-actions {
                 flex-direction: column;
             }
@@ -531,29 +531,25 @@
     </section>
 
     <!-- Produtos -->
-    <section class="section" id="cardapio">
-        <h2>Nossos Cookies Premium</h2>
-        <div class="produtos-grid">
-            <!-- Produto 1 -->
-            <div class="produto-card">
-                <div class="produto-image">
-                    <span class="produto-emoji">🍪</span>
-                    <div class="produto-badge">Mais Vendido</div>
-                </div>
-                <div class="produto-content">
-                    <h3>{{ $produto->nome }}</h3>
-                    <p>{{ $produto->descricao }}</p>
-                    {{--                     <div class="produto-price">R$ 8,90</div>
- --}} <div class="produto-actions">
-                        <a href="{{ $produto->link }}" class="btn-primary" target="_blank">Peça Agora</a>
-                        <a href="#" class="btn-outline">Detalhes</a>
-                    </div>
-                </div>
-            </div>
-
-
+    @foreach($produtos as $produto)
+    <div class="produto-card">
+        <div class="produto-image">
+            @if($produto->imagem)
+                <img src="{{ url('public/storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}" style="object-fit:cover;">
+            @elseif($produto->emoji)
+                {{ $produto->emoji }}
+            @else
+                🍪
+            @endif
         </div>
-    </section>
+        <div class="produto-content">
+            <h3>{{ $produto->nome }}</h3>
+            <p>{{ $produto->descricao }}</p>
+            <a href="{{ $produto->link }}" class="btn-primary" target="_blank">Peça Agora</a>
+        </div>
+    </div>
+@endforeach
+
 
     <!-- Mapa Localizador -->
     <section class="section" id="unidades">
