@@ -505,7 +505,7 @@
                 os seus sentidos.</p>
             <div class="hero-buttons">
                 <a href="#cardapio" class="btn-primary">Ver Cardápio</a>
-                <a href="#franquia" class="btn-secondary">Seja um Franqueado</a>
+                <a href="/apresentacao" class="btn-secondary">Seja um Franqueado</a>
             </div>
         </div>
     </section>

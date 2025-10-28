@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// rota para exibir PDF de apresentação
+Route::get('/apresentacao', function () {
+    return view('afiliado'); // Blade que vai conter o iframe
+});
+
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Listar produtos
