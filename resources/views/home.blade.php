@@ -642,7 +642,7 @@
 .btn-primary {
     background-color: #ff7f50;
     color: #fff;
-    padding: 10px 15px;
+    padding: 15px 15px;
     border-radius: 5px;
     text-decoration: none;
     transition: background 0.2s ease;
