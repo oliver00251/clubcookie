@@ -489,7 +489,7 @@
             <ul class="nav-menu">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#cardapio">Cardápio</a></li>
-                <li><a href="#unidades">Nossas Unidades</a></li>
+                <li><a href="#unidades">Nossas Lojas Franqueadas</a></li>
                 {{-- <li><a href="#marca">A Marca</a></li>
                 <li><a href="#faq">FAQ</a></li> --}}
                 <li><a href="#contato">Contato</a></li>
