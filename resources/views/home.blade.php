@@ -582,18 +582,18 @@
 <style>
   .produtos-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 produtos lado a lado no desktop */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
 }
 
+/* CARD */
 .produto-card {
     background: #fff;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    height: 350px; /* altura fixa do card */
     transition: transform 0.2s ease;
 }
 
@@ -601,13 +601,14 @@
     transform: translateY(-5px);
 }
 
+/* IMAGEM */
 .produto-image {
     width: 100%;
-    height: 150px; /* altura fixa da imagem */
+    height: 180px; /* altura fixa, garante proporção */
+    background: #f7f7f7;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f7f7f7;
     overflow: hidden;
 }
 
@@ -615,7 +616,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
     transition: transform 0.3s ease;
 }
 
@@ -623,25 +623,34 @@
     transform: scale(1.05);
 }
 
+/* CONTEÚDO */
 .produto-content {
-    padding: 15px;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    padding: 15px;
 }
 
 .produto-content h3 {
     margin: 0 0 10px;
     font-size: 1.2rem;
+    color: #C88A32;
 }
 
+/* ✨ AQUI ESTÁ A CORREÇÃO PRINCIPAL */
 .produto-content p {
     flex-grow: 1;
     font-size: 0.95rem;
     color: #555;
     margin-bottom: 15px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* mostra no máximo 3 linhas */
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
 }
 
+/* BOTÃO */
 .btn-primary {
     background-color: #ff7f50;
     color: #fff;
@@ -650,22 +659,29 @@
     border-radius: 5px;
     text-decoration: none;
     transition: background 0.2s ease;
+    font-weight: bold;
 }
 
 .btn-primary:hover {
     background-color: #ff5722;
 }
 
+/* EMOJIS (quando não tem imagem) */
 .emoji {
     font-size: 3rem;
 }
 
-/* RESPONSIVO: 1 produto por linha em telas menores que 768px */
+/* RESPONSIVO */
 @media screen and (max-width: 768px) {
     .produtos-grid {
         grid-template-columns: 1fr;
     }
+
+    .produto-image {
+        height: 160px;
+    }
 }
+
 
 </style>
 
