@@ -524,7 +524,7 @@
                     <div class="produto-content">
                         <h3>{{ $produto->nome }}</h3>
                         <p>{{ $produto->descricao }}</p>
-                        <a href="{{ $produto->link }}" target="_blank" class="btn-primary">Ver produto</a>
+                        <a href="{{ $produto->link }}" target="_blank" class="btn-primary">Compra Agora</a>
                     </div>
                 </div>
             @endforeach
