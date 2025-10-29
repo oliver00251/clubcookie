@@ -601,8 +601,8 @@
 /* IMAGEM */
 .produto-image {
     width: 100%;
-    max-width: 500px;
-    height: 500px;
+    max-width: 250px;
+    height: 250px;
     background-color: #f8f9fa;
     border-radius: 8px;
     display: flex;
