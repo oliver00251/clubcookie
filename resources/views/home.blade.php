@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Club do Cookie - Uma explosão de sabores</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
             box-sizing: border-box;
@@ -234,7 +236,7 @@
             border-color: rgba(243, 193, 100, 0.5);
         }
 
-       
+
         .produto-emoji {
             font-size: 5rem;
             filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
@@ -516,22 +518,79 @@
         <div class="produtos-grid">
             @foreach ($produtos as $produto)
                 <div class="produto-card">
-    <div class="produto-image">
-        <img src="{{ url('public/storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}">
-    </div>
-    <div class="produto-content">
-        <h3>{{ $produto->nome }}</h3>
-        <p>{{ $produto->descricao }}</p>
-        <a href="{{ $produto->link }}" target="_blank" class="btn-primary">Ver produto</a>
-    </div>
-</div>
-
+                    <div class="produto-image">
+                        <img src="{{ url('public/storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}">
+                    </div>
+                    <div class="produto-content">
+                        <h3>{{ $produto->nome }}</h3>
+                        <p>{{ $produto->descricao }}</p>
+                        <a href="{{ $produto->link }}" target="_blank" class="btn-primary">Ver produto</a>
+                    </div>
+                </div>
             @endforeach
         </div>
     </section>
+    <!-- Formulário Franqueado -->
+
+    <section class="section" id="franquia">
+        <h2>Seja um Franqueado</h2>
+        <form id="formLead" action="{{ route('leads.store') }}" method="POST" class="franquia-form">
+            @csrf
+            <div>
+                <input type="text" name="nome" placeholder="Nome" required>
+            </div>
+            <div>
+                <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+            </div>
+            <div>
+                <input type="text" name="cidade_interesse" placeholder="Cidade de Interesse" required>
+            </div>
+            <div>
+                <input type="text" name="estado" placeholder="Estado (UF)" required maxlength="2">
+            </div>
+            <button type="submit" class="btn-primary">Enviar</button>
+        </form>
 
 
 
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#formLead').on('submit', function(e) {
+                e.preventDefault();
+
+                let form = $(this);
+                let formData = form.serialize();
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sucesso!',
+                                text: response.message,
+                                confirmButtonColor: '#C88A32'
+                            });
+                            form[0].reset();
+                        }
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Ops!',
+                            text: 'Algo deu errado. Tente novamente.',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 
     <!-- Mapa Localizador -->
     <section class="section" id="unidades">
@@ -559,7 +618,7 @@
             <div class="footer-section">
                 <h3>Contato</h3>
                 <a href="tel:+5583996420098">📞 (83) 9 9642-0098</a>
-                <a href="mailto:contato@clubdocookie.com.br">✉️ contato@clubdocookie.com.br</a>
+                <a href="mailto:contato@clubdocookie.com">✉️ contato@clubdocookie.com</a>
                 <a href="#">📍 Rua Severino Soares, 303 Jd Guanabara Patos - PB</a>
             </div>
             <div class="footer-section">
@@ -575,98 +634,130 @@
     </footer>
 </body>
 <style>
-.produtos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-}
-
-/* CARD */
-.produto-card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;
-    transition: transform 0.2s ease;
-    padding: 15px;
-}
-
-.produto-card:hover {
-    transform: translateY(-5px);
-}
-
-/* IMAGEM */
-.produto-image {
-    width: 100%;
-    max-width: 250px;
-    height: 250px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.produto-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Mostra a imagem completa, sem cortar */
-    background-color: #fff;
-}
-
-/* CONTEÚDO */
-.produto-content {
-    width: 100%;
-    text-align: center;
-    margin-top: 15px;
-}
-
-.produto-content h3 {
-    font-size: 1.2rem;
-    color: #C88A32;
-    margin-bottom: 10px;
-}
-
-.produto-content p {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 15px;
-    line-height: 1.4;
-}
-
-/* BOTÃO */
-.btn-primary {
-    background-color: #ff7f50;
-    color: #fff;
-    padding: 15px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background 0.2s ease;
-    font-weight: bold;
-    display: inline-block;
-}
-
-.btn-primary:hover {
-    background-color: #ff5722;
-}
-
-/* EMOJIS (quando não tem imagem) */
-.emoji {
-    font-size: 5rem;
-}
-
-/* RESPONSIVO */
-@media screen and (max-width: 768px) {
-    .produto-image {
-        height: auto;
-        max-height: 400px;
+    .produtos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
     }
-}
 
+    /* CARD */
+    .produto-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+        transition: transform 0.2s ease;
+        padding: 15px;
+    }
+
+    .produto-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* IMAGEM */
+    .produto-image {
+        width: 100%;
+        max-width: 250px;
+        height: 250px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .produto-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        /* Mostra a imagem completa, sem cortar */
+        background-color: #fff;
+    }
+
+    /* CONTEÚDO */
+    .produto-content {
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .produto-content h3 {
+        font-size: 1.2rem;
+        color: #C88A32;
+        margin-bottom: 10px;
+    }
+
+    .produto-content p {
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 15px;
+        line-height: 1.4;
+    }
+
+    /* BOTÃO */
+    .btn-primary {
+        background-color: #ff7f50;
+        color: #fff;
+        padding: 15px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background 0.2s ease;
+        font-weight: bold;
+        display: inline-block;
+    }
+
+    .btn-primary:hover {
+        background-color: #ff5722;
+    }
+
+    /* EMOJIS (quando não tem imagem) */
+    .emoji {
+        font-size: 5rem;
+    }
+
+    /* RESPONSIVO */
+    @media screen and (max-width: 768px) {
+        .produto-image {
+            height: auto;
+            max-height: 400px;
+        }
+    }
+</style>
+<style>
+    .franquia-form {
+        max-width: 500px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .franquia-form input {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #C88A32;
+        font-size: 1rem;
+        width: 100%
+    }
+
+    .franquia-form button {
+        padding: 12px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #F3C164, #C88A32);
+        color: #1C0E05;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+    }
+
+    .franquia-form button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(200, 138, 50, 0.3);
+    }
 </style>
 
 </html>

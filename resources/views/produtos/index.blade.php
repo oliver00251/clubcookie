@@ -17,7 +17,6 @@
             overflow-x: hidden;
         }
 
-        /* ===== LAYOUT GERAL ===== */
         .sidebar {
             position: fixed;
             top: 0;
@@ -63,7 +62,6 @@
             padding: 2rem;
         }
 
-        /* ===== TABELA E CARTÕES ===== */
         .card {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
@@ -75,7 +73,6 @@
             border-radius: 5px;
         }
 
-        /* ===== NAVBAR SUPERIOR ===== */
         .topbar {
             background: white;
             border-bottom: 1px solid #dee2e6;
@@ -107,10 +104,8 @@
     <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="brand"><i class="bi bi-cookie"></i> Clube do Cookie</div>
-        <a href="#" class="active"><i class="bi bi-box-seam"></i> Produtos</a>
-        <a href="#" title="aguardando formulário"><i class="bi bi-person"></i> Leads</a>
-        {{-- <a href="#"><i class="bi bi-bar-chart"></i> Relatórios</a>
-        <a href="#"><i class="bi bi-gear"></i> Configurações</a> --}}
+        <a href="#" class="menu-link active" data-target="produtos-section"><i class="bi bi-box-seam"></i> Produtos</a>
+        <a href="#" class="menu-link" data-target="leads-section"><i class="bi bi-person"></i> Leads</a>
 
         <form action="{{ route('logout') }}" method="POST" class="logout mt-3" style="margin-top: 60vh !important">
             @csrf
@@ -122,14 +117,14 @@
     <div class="content">
         <!-- Topbar -->
         <div class="topbar d-flex justify-content-between align-items-center">
-            <h4 class="mb-0 text-secondary fw-semibold">Painel de Produtos</h4>
+            <h4 class="mb-0 text-secondary fw-semibold">Dashboard</h4>
             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCadastro">
                 <i class="bi bi-plus-lg"></i> Novo Produto
             </button>
         </div>
 
-        <!-- Tabela -->
-        <div class="card p-3 mt-4">
+        <!-- Tabela de Produtos -->
+        <div class="card p-3 mt-4" id="produtos-section">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
@@ -179,9 +174,38 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Tabela de Leads -->
+        <div class="card p-3 mt-5" id="leads-section">
+            <h5 class="mb-3">Leads Cadastrados</h5>
+            <table class="table table-hover table-bordered" id="leads-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>WhatsApp</th>
+                        <th>Cidade de Interesse</th>
+                        <th>Estado</th>
+                        <th>Data de Cadastro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($leads as $lead)
+                        <tr>
+                            <td>{{ $lead->id }}</td>
+                            <td>{{ $lead->nome }}</td>
+                            <td>{{ $lead->whatsapp }}</td>
+                            <td>{{ $lead->cidade_interesse }}</td>
+                            <td>{{ $lead->estado }}</td>
+                            <td>{{ $lead->created_at->format('d/m/Y H:i') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- MODAL CADASTRO -->
+    <!-- MODAL CADASTRO PRODUTO -->
     <div class="modal fade" id="modalCadastro" tabindex="-1" aria-labelledby="modalCadastroLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -234,13 +258,28 @@
 
     <script>
         $(document).ready(function() {
+            // Inicialmente exibe apenas produtos
+            $('#produtos-section').show();
+            $('#leads-section').hide();
+
+            // Alternar entre produtos e leads
+            $('.menu-link').on('click', function(e) {
+                e.preventDefault();
+                $('.menu-link').removeClass('active');
+                $(this).addClass('active');
+                let target = $(this).data('target');
+                $('#produtos-section, #leads-section').hide();
+                $('#' + target).show();
+            });
+
+            // DataTables
             $('#produtos-table').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
-                },
-                "order": [
-                    [0, "asc"]
-                ]
+                "language": { "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json" },
+                "order": [[0, "asc"]]
+            });
+            $('#leads-table').DataTable({
+                "language": { "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json" },
+                "order": [[0, "desc"]]
             });
         });
 
@@ -263,16 +302,9 @@
                 $.ajax({
                     url: `/produtos/${id}`,
                     type: 'POST',
-                    data: {
-                        _method: 'DELETE',
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function() {
-                        $(`#produto-${id}`).remove();
-                    },
-                    error: function() {
-                        alert('Erro ao excluir o produto.');
-                    }
+                    data: { _method: 'DELETE', _token: '{{ csrf_token() }}' },
+                    success: function() { $(`#produto-${id}`).remove(); },
+                    error: function() { alert('Erro ao excluir o produto.'); }
                 });
             }
         }
@@ -285,5 +317,4 @@
         });
     </script>
 </body>
-
 </html>

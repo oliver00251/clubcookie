@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LeadController;
 use App\Http\Controllers\ProdutoController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/apresentacao', function () {
     return view('afiliado'); // Blade que vai conter o iframe
 });
+Route::post('/leads', [LeadController::class, 'store'])->name('leads.store');
+
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');

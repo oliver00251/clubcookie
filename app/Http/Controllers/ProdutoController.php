@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lead;
 use App\Models\Produto;
 
 use Illuminate\Http\Request;
@@ -20,7 +21,8 @@ class ProdutoController extends Controller
     {
         try {
             $produtos = Produto::all();
-            return view('produtos.index', compact('produtos'));
+            $leads = Lead::all();
+            return view('produtos.index', compact('produtos','leads'));
         } catch (\Exception $e) {
             dd('Erro ao buscar produtos: ' . $e->getMessage());
         }
