@@ -516,21 +516,16 @@
         <div class="produtos-grid">
             @foreach ($produtos as $produto)
                 <div class="produto-card">
-                    <div class="produto-image">
-                        @if ($produto->imagem)
-                            <img src="{{ url('public/storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}">
-                        @elseif($produto->emoji)
-                            <span class="emoji">{{ $produto->emoji }}</span>
-                        @else
-                            <span class="emoji">🍪</span>
-                        @endif
-                    </div>
-                    <div class="produto-content">
-                        <h3>{{ $produto->nome }}</h3>
-                        <p>{{ $produto->descricao }}</p>
-                        <a href="{{ $produto->link }}" class="btn-primary" target="_blank">Peça Agora</a>
-                    </div>
-                </div>
+    <div class="produto-image">
+        <img src="{{ url('public/storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}">
+    </div>
+    <div class="produto-content">
+        <h3>{{ $produto->nome }}</h3>
+        <p>{{ $produto->descricao }}</p>
+        <a href="{{ $produto->link }}" target="_blank" class="btn-primary">Ver produto</a>
+    </div>
+</div>
+
             @endforeach
         </div>
     </section>
@@ -580,10 +575,10 @@
     </footer>
 </body>
 <style>
-  .produtos-grid {
+.produtos-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 25px;
 }
 
 /* CARD */
@@ -593,8 +588,10 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    align-items: center;
     overflow: hidden;
     transition: transform 0.2s ease;
+    padding: 15px;
 }
 
 .produto-card:hover {
@@ -604,8 +601,10 @@
 /* IMAGEM */
 .produto-image {
     width: 100%;
-    height: 180px; /* altura fixa, garante proporção */
-    background: #f7f7f7;
+    max-width: 500px;
+    height: 500px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -615,51 +614,40 @@
 .produto-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.produto-card:hover .produto-image img {
-    transform: scale(1.05);
+    object-fit: contain; /* Mostra a imagem completa, sem cortar */
+    background-color: #fff;
 }
 
 /* CONTEÚDO */
 .produto-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
+    width: 100%;
+    text-align: center;
+    margin-top: 15px;
 }
 
 .produto-content h3 {
-    margin: 0 0 10px;
     font-size: 1.2rem;
     color: #C88A32;
+    margin-bottom: 10px;
 }
 
-/* ✨ AQUI ESTÁ A CORREÇÃO PRINCIPAL */
 .produto-content p {
-    flex-grow: 1;
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: #555;
     margin-bottom: 15px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3; /* mostra no máximo 3 linhas */
-    -webkit-box-orient: vertical;
-    text-overflow: ellipsis;
+    line-height: 1.4;
 }
 
 /* BOTÃO */
 .btn-primary {
     background-color: #ff7f50;
     color: #fff;
-    text-align: center;
-    padding: 10px;
+    padding: 10px 15px;
     border-radius: 5px;
     text-decoration: none;
     transition: background 0.2s ease;
     font-weight: bold;
+    display: inline-block;
 }
 
 .btn-primary:hover {
@@ -668,20 +656,16 @@
 
 /* EMOJIS (quando não tem imagem) */
 .emoji {
-    font-size: 3rem;
+    font-size: 5rem;
 }
 
 /* RESPONSIVO */
 @media screen and (max-width: 768px) {
-    .produtos-grid {
-        grid-template-columns: 1fr;
-    }
-
     .produto-image {
-        height: 160px;
+        height: auto;
+        max-height: 400px;
     }
 }
-
 
 </style>
 
